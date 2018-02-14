@@ -2993,6 +2993,13 @@ void ExifManager::parse (bool isRaw, bool skipIgnored)
             }
         }
 
+        // TODO work here
+        if (root->getTag ("Rating")) {
+            printf("\nTag Rating istnieje\n");
+        } else {
+            printf("\n Niestety tag Rating nie istnieje \n");
+        }
+
         // --- detecting image root IFD based on SubFileType, or if not provided, on PhotometricInterpretation
 
         bool frameRootDetected = false;

@@ -342,7 +342,7 @@ public:
     bool onlyFirst;  // Only first IFD
     unsigned int IFDOffset;
     std::vector<TagDirectory*> roots;
-    std::vector<TagDirectory*> frames;
+    std::vector<TagDirectory*> frames; // TODO here it is hidden
 
     ExifManager (FILE* fHandle, std::unique_ptr<rtengine::RawMetaDataLocation> _rml, bool onlyFirstIFD)
         : f(fHandle), rml(std::move(_rml)), order(UNKNOWN), onlyFirst(onlyFirstIFD),

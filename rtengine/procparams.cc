@@ -2711,7 +2711,7 @@ void ProcParams::setDefaults ()
     exif.clear ();
     iptc.clear ();
 
-    rank = 0;
+    rank = 0; // FIXME: try getting from exif
     colorlabel = 0;
     inTrash = false;
 
