@@ -162,7 +162,9 @@ public:
 
     int             getRank  ()
     {
-        return pparams.rank;
+        printf("\nDEBUG: rating w %s wynosi: %d\n", __FUNCTION__, cfs.rating);
+        return cfs.rating; // FIXME-piotr !!! ( this is where segfault happens. possibly because we don't alwats have rating set) work with get/set Rank everywhere where used
+        // return pparams.rank;
     }
     void            setRank  (int rank)
     {

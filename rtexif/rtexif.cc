@@ -2475,7 +2475,6 @@ parse_leafdata (TagDirectory* root, ByteOrder order)
     Tag* exif = root->getTag ("Exif");
 
     if (!exif) {
-    printf("DEBUG: %d @ %s", __LINE__, __FUNCTION__);
         exif = new Tag (root, root->getAttrib ("Exif"));
         exif->initSubDir();
         root->addTagFront (exif);
@@ -2487,13 +2486,7 @@ parse_leafdata (TagDirectory* root, ByteOrder order)
         exif->getDirectory()->addTagFront (t);
     }
 
-    if (root->getTag ("Rating")) { // FIXME:piotr dlaczego to tutaj sie nie pojawia
-        printf("\nTag Rating istnieje w %s\n", __FUNCTION__);
-        printf("DEBUG: %d @ %s", __LINE__, __FUNCTION__);
-    }
-
     if (!root->getTag ("Orientation")) {
-        printf("DEBUG: %d @ %s", __LINE__, __FUNCTION__);
         int orientation;
 
         switch (rotation_angle) {
@@ -3008,10 +3001,19 @@ void ExifManager::parse (bool isRaw, bool skipIgnored)
         }
 
         // FIXME:piotr work here
-        if (root->getTag ("Rating")) { // FIXME:piotr dlaczego da się to odczytać tutaj
+        if (root->getTag ("Rating")) {
             printf("\nTag Rating istnieje w %s\n", __FUNCTION__);
+            printf("tag value: u: %u\n", *root->getTag("Rating")->getValue());
         } else {
             printf("\n Niestety tag Rating nie istnieje \n");
+        }
+        if (!root->getTag ("Rating")) {
+                Tag *t = new Tag (root, root->getAttrib("Rating"));
+            t->initInt (0, LONG);
+            root->addTag (t);
+
+            printf("\nTag Rating zostal stworzony w %s\n", __FUNCTION__);
+            printf("tag value: u: %u\n", *root->getTag("Rating")->getValue());
         }
 
         // --- detecting image root IFD based on SubFileType, or if not provided, on PhotometricInterpretation
@@ -3092,10 +3094,6 @@ void ExifManager::parse (bool isRaw, bool skipIgnored)
         ifdOffset = get4 (f, order);
 
         roots.push_back(root);
-        printf("\n~~~~~~~~~ ROOT ~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
-        root->printAll ();
-        printf("\n~~~~~~~~~ ROOT ~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
-
 #if PRINT_METADATA_TREE
         printf("\n~~~~~~~~~ ROOT ~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
         root->printAll ();

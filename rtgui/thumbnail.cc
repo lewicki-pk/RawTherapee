@@ -759,6 +759,7 @@ int Thumbnail::infoFromImage (const Glib::ustring& fname, std::unique_ptr<rtengi
         cfs.lens         = idata->getLens();
         cfs.camMake      = idata->getMake();
         cfs.camModel     = idata->getModel();
+        cfs.rating       = idata->getRating(); // FIXME-piotr : missing rating in cfs
 
         if (idata->getOrientation() == "Rotate 90 CW") {
             deg = 90;
