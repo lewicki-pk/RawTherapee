@@ -207,7 +207,7 @@ const ProcParams& Thumbnail::getProcParamsU ()
  *
  *  @return Return a pointer to a ProcPamas structure to be updated if returnParams is true and if everything went fine, NULL otherwise.
  */
-rtengine::procparams::ProcParams* Thumbnail::createProcParamsForUpdate(bool returnParams, bool force, bool flaggingMode)
+rtengine::procparams::ProcParams* Thumbnail::createProcParamsForUpdate(bool returnParams, bool force, bool flaggingMode) //FIXME:piotr interesting
 {
 
     static int index = 0; // Will act as unique identifier during the session

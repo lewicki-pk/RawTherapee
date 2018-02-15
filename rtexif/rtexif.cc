@@ -298,7 +298,7 @@ bool TagDirectory::CPBDump (const Glib::ustring &commFName, const Glib::ustring 
             kf->set_boolean ("Common Data", "IsPixelShift", cfs->isPixelShift);
             kf->set_double ("Common Data", "FNumber", cfs->fnumber);
             kf->set_double ("Common Data", "Shutter", cfs->shutter);
-            kf->set_double ("Common Data", "FocalLength", cfs->focalLen);
+            kf->set_double ("Common Data", "FocalLength", cfs->focalLen); // FIXME:piotr to jest w moim przykladzie
             kf->set_integer ("Common Data", "ISO", cfs->iso);
             kf->set_string ("Common Data", "Lens", cfs->lens);
             kf->set_string ("Common Data", "Make", cfs->camMake);
@@ -2366,7 +2366,7 @@ void ExifManager::parseCIFF (int length, TagDirectory* root)
     }
 
     if (focal_len > 0) {
-        t = new Tag (exif, lookupAttrib (exifAttribs, "FocalLength"));
+        t = new Tag (exif, lookupAttrib (exifAttribs, "FocalLength")); // FIXME:piotr to jest w przykladzie
         t->initRational (focal_len * 32, 32);
         exif->addTag (t);
     }
@@ -2389,9 +2389,11 @@ void ExifManager::parseCIFF (int length, TagDirectory* root)
 
 }
 
+// FIXME:piotr  co sie dzieje z root jak juz skonczymy prasowac leafdata
 static void
 parse_leafdata (TagDirectory* root, ByteOrder order)
 {
+    printf("DEBUG: %d @ %s", __LINE__, __FUNCTION__);
 
     Tag *leafdata = root->getTag ("LeafData");
 
@@ -2416,6 +2418,7 @@ parse_leafdata (TagDirectory* root, ByteOrder order)
     int found_count = 0;
 
     while (pos + (int)sizeof (hdr) <= valuesize && found_count < 2) {
+    printf("DEBUG: %d @ %s", __LINE__, __FUNCTION__);
         hdr = (char *)&value[pos];
 
         if (strncmp (hdr, PKTS_tag, 4) != 0) {
@@ -2472,6 +2475,7 @@ parse_leafdata (TagDirectory* root, ByteOrder order)
     Tag* exif = root->getTag ("Exif");
 
     if (!exif) {
+    printf("DEBUG: %d @ %s", __LINE__, __FUNCTION__);
         exif = new Tag (root, root->getAttrib ("Exif"));
         exif->initSubDir();
         root->addTagFront (exif);
@@ -2483,7 +2487,13 @@ parse_leafdata (TagDirectory* root, ByteOrder order)
         exif->getDirectory()->addTagFront (t);
     }
 
+    if (root->getTag ("Rating")) { // FIXME:piotr dlaczego to tutaj sie nie pojawia
+        printf("\nTag Rating istnieje w %s\n", __FUNCTION__);
+        printf("DEBUG: %d @ %s", __LINE__, __FUNCTION__);
+    }
+
     if (!root->getTag ("Orientation")) {
+        printf("DEBUG: %d @ %s", __LINE__, __FUNCTION__);
         int orientation;
 
         switch (rotation_angle) {
@@ -2685,7 +2695,8 @@ parse_leafdata (TagDirectory* root, ByteOrder order)
                     }
 
                     exif->getDirectory()->addTagFront (t);
-                } else if (strcmp (tag, "FocalLength") == 0 && sscanf (val, "%d/%d", &num, &denom) == 2) {
+                } else if (strcmp (tag, "FocalLength") == 0 && sscanf (val, "%d/%d", &num, &denom) == 2) { // FIXME:piotr
+                    printf("DEBUG: %d @ %s", __LINE__, __FUNCTION__);
                     t->initRational (num, denom);
                     exif->getDirectory()->addTagFront (t);
                 } else if (strcmp (tag, "ISOSpeedRatings") == 0) {
@@ -2712,6 +2723,9 @@ parse_leafdata (TagDirectory* root, ByteOrder order)
                     t->initString (tstr);
                     exif->getDirectory()->addTagFront (t);
                 } else {
+                    printf("DEBUG: %d @ %s", __LINE__, __FUNCTION__);
+                    printf("DBG");
+                    printf("%s\n", tag);
                     delete t;
                 }
             }
@@ -2817,7 +2831,7 @@ void ExifManager::parse (bool isRaw, bool skipIgnored)
             }
         }
 
-        parse_leafdata (root, order);
+        parse_leafdata (root, order); // FIXME:piotr
 
         if (make && !strncmp ((char*)make->getValue(), "Hasselblad", 10)) {
             /*
@@ -2993,9 +3007,9 @@ void ExifManager::parse (bool isRaw, bool skipIgnored)
             }
         }
 
-        // TODO work here
-        if (root->getTag ("Rating")) {
-            printf("\nTag Rating istnieje\n");
+        // FIXME:piotr work here
+        if (root->getTag ("Rating")) { // FIXME:piotr dlaczego da się to odczytać tutaj
+            printf("\nTag Rating istnieje w %s\n", __FUNCTION__);
         } else {
             printf("\n Niestety tag Rating nie istnieje \n");
         }
@@ -3078,6 +3092,9 @@ void ExifManager::parse (bool isRaw, bool skipIgnored)
         ifdOffset = get4 (f, order);
 
         roots.push_back(root);
+        printf("\n~~~~~~~~~ ROOT ~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+        root->printAll ();
+        printf("\n~~~~~~~~~ ROOT ~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 
 #if PRINT_METADATA_TREE
         printf("\n~~~~~~~~~ ROOT ~~~~~~~~~~~~~~~~~~~~~~~~\n\n");

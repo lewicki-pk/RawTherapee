@@ -2711,7 +2711,16 @@ void ProcParams::setDefaults ()
     exif.clear ();
     iptc.clear ();
 
-    rank = 0; // FIXME: try getting from exif
+    rank = 0; // FIXME: try getting it from exif
+//                rtengine::FramesMetaData* imageMetaData;
+//            if (getType() == FT_Raw) {
+//                // Should we ask all frame's MetaData ?
+//                imageMetaData = rtengine::FramesMetaData::fromFile (fname, std::unique_ptr<rtengine::RawMetaDataLocation>(new rtengine::RawMetaDataLocation(rtengine::Thumbnail::loadMetaDataFromRaw(fname))), true);
+//            } else {
+//                // Should we ask all frame's MetaData ?
+//                imageMetaData = rtengine::FramesMetaData::fromFile (fname, nullptr, true);
+//            }
+
     colorlabel = 0;
     inTrash = false;
 
