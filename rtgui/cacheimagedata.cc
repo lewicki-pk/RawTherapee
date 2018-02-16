@@ -71,6 +71,11 @@ int CacheImageData::load (const Glib::ustring& fname) // FIXME-piotr : add savin
                 if (keyFile.has_key ("General", "RecentlySaved")) {
                     recentlySaved = keyFile.get_boolean ("General", "RecentlySaved");
                 }
+
+                // FIXME-piotr I don't think this work
+                if (keyFile.has_key ("General", "Rating")) {
+                    recentlySaved = keyFile.get_integer ("General", "Rating");
+                }
             }
 
             timeValid = keyFile.has_group ("DateTime");
@@ -225,6 +230,8 @@ int CacheImageData::save (const Glib::ustring& fname)
     keyFile.set_boolean ("General", "Supported", supported);
     keyFile.set_integer ("General", "Format", format);
     keyFile.set_boolean ("General", "RecentlySaved", recentlySaved);
+    // FIXME-piotr I don't think this work
+    keyFile.set_integer ("General", "Rating", rating);
 
     // remove the old implementation of Rank and InTrash from cache
     if (keyFile.has_key ("General", "Rank")) {

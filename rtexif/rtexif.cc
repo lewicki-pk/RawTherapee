@@ -3008,12 +3008,13 @@ void ExifManager::parse (bool isRaw, bool skipIgnored)
             printf("\n Niestety tag Rating nie istnieje \n");
         }
         if (!root->getTag ("Rating")) {
-                Tag *t = new Tag (root, root->getAttrib("Rating"));
+            // Adding the empty rating if it was not in the EXIF/XMP data
+            Tag *t = new Tag (root, root->getAttrib("Rating"));
             t->initInt (0, LONG);
             root->addTag (t);
 
-            printf("\nTag Rating zostal stworzony w %s\n", __FUNCTION__);
-            printf("tag value: u: %u\n", *root->getTag("Rating")->getValue());
+            printf("\n DEBUG-piotr Tag Rating zostal stworzony w %s\n", __FUNCTION__);
+            printf(" DEBUG-piotr tag value: u: %u\n", *root->getTag("Rating")->getValue());
         }
 
         // --- detecting image root IFD based on SubFileType, or if not provided, on PhotometricInterpretation
