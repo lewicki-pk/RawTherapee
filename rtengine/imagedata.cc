@@ -52,7 +52,7 @@ FramesMetaData* FramesMetaData::fromFile (const Glib::ustring& fname, std::uniqu
 
 FrameData::FrameData (rtexif::TagDirectory* frameRootDir_, rtexif::TagDirectory* rootDir, rtexif::TagDirectory* firstRootDir)
     : frameRootDir(frameRootDir_), iptc(nullptr), time(), timeStamp(), iso_speed(0), aperture(0.), focal_len(0.), focal_len35mm(0.), focus_dist(0.f),
-      shutter(0.), expcomp(0.), make("Unknown"), model("Unknown"), orientation("Unknown"), rating(0), lens("Unknown"),
+      shutter(0.), expcomp(0.), make("Unknown"), model("Unknown"), orientation("Unknown"), lens("Unknown"), rating(0),
       sampleFormat(IIOSF_UNKNOWN), isPixelShift(false), isHDR(false)
 {
     memset (&time, 0, sizeof(time));
