@@ -162,7 +162,7 @@ public:
 
     int             getRank  ()
     {
-        return pparams.rank;
+        return cfs.rating;
     }
     void            setRank  (int rank)
     {

@@ -49,6 +49,7 @@ protected:
     std::string make, model, serial;
     std::string orientation;
     std::string lens;
+    int rating;
     IIOSampleFormat sampleFormat;
 
     // each frame has the knowledge of "being an"
@@ -83,6 +84,7 @@ public:
     std::string getLens () const;
     std::string getSerialNumber () const;
     std::string getOrientation () const;
+    int getRating () const;
 };
 
 class FramesData : public FramesMetaData {
@@ -125,6 +127,7 @@ public:
     std::string getLens (unsigned int frame = 0) const;
     std::string getSerialNumber (unsigned int frame = 0) const;
     std::string getOrientation (unsigned int frame = 0) const;
+    int getRating (unsigned int frame = 0) const;
 };
 
 
